@@ -81,4 +81,83 @@ con.connect(function(err) {
     if (err) throw err;
     console.log(result);
   });
+
+  {
+    var adr = "Mountain 21";
+    var sql = "SELECT * FROM customers WHERE address = " + mysql.escape(adr);
+    con.query(sql, function(err, result) {
+      if (err) throw err;
+      console.log(result);
+    });
+  }
+
+  {
+    var adr = "Mountain 21";
+    var sql = "SELECT * FROM customers WHERE address = ?";
+    con.query(sql, [adr], function(err, result) {
+      if (err) throw err;
+      console.log(result);
+    });
+  }
+
+  {
+    var name = "Amy";
+    var adr = "Mountain 21";
+    var sql = "SELECT * FROM customers WHERE name = ? OR address = ?";
+    con.query(sql, [name, adr], function(err, result) {
+      if (err) throw err;
+      console.log(result);
+    });
+  }
+
+  {
+    var sql = "DELETE FROM customers WHERE address = 'Mountain 21'";
+    con.query(sql, function(err, result) {
+      if (err) throw err;
+      console.log("Number of records deleted: " + result.affectedRows);
+    });
+  }
+
+  {
+    var sql = "DROP TABLE customers";
+    con.query(sql, function(err, result) {
+      if (err) throw err;
+      console.log("Table deleted");
+    });
+  }
+
+  {
+    var sql =
+      "UPDATE customers SET address = 'Canyon 123' WHERE address = 'Valley 345'";
+    con.query(sql, function(err, result) {
+      if (err) throw err;
+      console.log(result.affectedRows + " record(s) updated");
+    });
+  }
+
+  {
+    var sql = "SELECT * FROM customers LIMIT 5";
+    con.query(sql, function(err, result) {
+      if (err) throw err;
+      console.log(result);
+    });
+  }
+
+  {
+    //var sql = "SELECT * FROM customers LIMIT 2, 5";
+    var sql = "SELECT * FROM customers LIMIT 5 OFFSET 2";
+    con.query(sql, function(err, result) {
+      if (err) throw err;
+      console.log(result);
+    });
+  }
+
+  {
+    var sql =
+      "SELECT users.name AS user, products.name AS favorite FROM users JOIN products ON users.favorite_product = products.id";
+    con.query(sql, function(err, result) {
+      if (err) throw err;
+      console.log(result);
+    });
+  }
 });
